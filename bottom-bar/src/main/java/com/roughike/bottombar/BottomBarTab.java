@@ -317,29 +317,25 @@ public class BottomBarTab extends LinearLayout {
     }
 
     public void setBadgeCount(int count) {
-        if (count <= 0) {
-            if (badge != null) {
-                badge.removeFromTab(this);
-                badge = null;
-            }
-
-            return;
-        }
-
         if (badge == null) {
-            badge = new BottomBarBadge(getContext());
+            badge = new BottomBarBadge(getContext(), count);
             badge.attachToTab(this, badgeBackgroundColor);
         }
-
         badge.setCount(count);
-
         if (isActive && badgeHidesWhenActive) {
             badge.hide();
         }
     }
 
-    public void removeBadge() {
+    public void setBadgeDot() {
         setBadgeCount(0);
+    }
+
+    public void removeBadge() {
+        if (badge != null) {
+            badge.removeFromTab(this);
+            badge = null;
+        }
     }
 
     boolean isActive() {
@@ -507,12 +503,6 @@ public class BottomBarTab extends LinearLayout {
         animator.start();
     }
 
-    private void updateBadgePosition() {
-        if (badge != null) {
-            badge.adjustPositionAndSize(this);
-        }
-    }
-
     private void setTopPaddingAnimated(int start, int end) {
         if (type == Type.TABLET || isTitleless) {
             return;
@@ -603,7 +593,6 @@ public class BottomBarTab extends LinearLayout {
         if (badge != null) {
             Bundle bundle = saveState();
             bundle.putParcelable("superstate", super.onSaveInstanceState());
-
             return bundle;
         }
 

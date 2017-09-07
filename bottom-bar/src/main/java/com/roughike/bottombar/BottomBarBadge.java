@@ -4,14 +4,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.VisibleForTesting;
+import android.support.annotation.Dimension;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.AppCompatTextView;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
 
 /*
  * BottomBar library for Android
@@ -29,12 +29,30 @@ import android.widget.TextView;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-class BottomBarBadge extends TextView {
-    private int count;
+class BottomBarBadge extends AppCompatTextView {
+    private int count = 0; // if count == 0 , Badge show as a dot
     private boolean isVisible = false;
+    BottomBarTab tab;
 
     BottomBarBadge(Context context) {
+        this(context, null);
+    }
+
+    BottomBarBadge(Context context, int count) {
         super(context);
+        this.count = count;
+        int innerPadding = MiscUtils.dpToPixel(context, 1);
+        setPadding(innerPadding, innerPadding, innerPadding, innerPadding);
+        setGravity(Gravity.CENTER);
+    }
+
+
+    BottomBarBadge(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    BottomBarBadge(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
     }
 
     /**
@@ -44,7 +62,12 @@ class BottomBarBadge extends TextView {
      */
     void setCount(int count) {
         this.count = count;
-        setText(String.valueOf(count));
+        if (count == 0) {
+            setText("");
+        }else {
+            setText(String.valueOf(count));
+        }
+        setTextSize(Dimension.SP, 10);
     }
 
     /**
@@ -96,7 +119,6 @@ class BottomBarBadge extends TextView {
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         setLayoutParams(params);
-        setGravity(Gravity.CENTER);
         MiscUtils.setTextAppearance(this, R.style.BB_BottomBarBadge_Text);
 
         setColoredCircleBackground(backgroundColor);
@@ -104,9 +126,7 @@ class BottomBarBadge extends TextView {
     }
 
     void setColoredCircleBackground(int circleColor) {
-        int innerPadding = MiscUtils.dpToPixel(getContext(), 1);
-        ShapeDrawable backgroundCircle = BadgeCircle.make(innerPadding * 3, circleColor);
-        setPadding(innerPadding, innerPadding, innerPadding, innerPadding);
+        ShapeDrawable backgroundCircle = BadgeCircle.make(circleColor);
         setBackgroundCompat(backgroundCircle);
     }
 
@@ -117,7 +137,6 @@ class BottomBarBadge extends TextView {
         final BadgeContainer badgeContainer = new BadgeContainer(getContext());
         badgeContainer.setLayoutParams(new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
         badgeContainer.addView(tab);
         badgeContainer.addView(this);
 
@@ -144,19 +163,22 @@ class BottomBarBadge extends TextView {
 
     void adjustPositionAndSize(BottomBarTab tab) {
         AppCompatImageView iconView = tab.getIconView();
-        ViewGroup.LayoutParams params = getLayoutParams();
+        final boolean isDot = count == 0;
+        float xOffset = isDot ? iconView.getWidth() : iconView.getWidth() / 1.25f;
+        float yOffset = isDot ? 6 : 4;
+        setX((iconView.getX() + xOffset));
+        setY(MiscUtils.dpToPixel(getContext(), yOffset));
 
-        int size = Math.max(getWidth(), getHeight());
-        float xOffset = (float) (iconView.getWidth() / 1.25);
-
-        setX(iconView.getX() + xOffset);
-        setTranslationY(10);
-
-        if (params.width != size || params.height != size) {
-            params.width = size;
-            params.height = size;
-            setLayoutParams(params);
+        ViewGroup.LayoutParams layoutParams= getLayoutParams();
+        if (isDot) {
+            layoutParams.width = MiscUtils.dpToPixel(getContext(), 8);
+            layoutParams.height = MiscUtils.dpToPixel(getContext(), 8);
+        } else {
+            int size = Math.max(getWidth(), getHeight());
+            layoutParams.width = size;
+            layoutParams.height = size;
         }
+        setLayoutParams(layoutParams);
     }
 
     @SuppressWarnings("deprecation")

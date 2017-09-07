@@ -40,7 +40,11 @@ public class BadgeActivity extends AppCompatActivity {
             }
         });
 
-        BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_nearby);
-        nearby.setBadgeCount(5);
+        final BottomBarTab nearby = bottomBar.getTabWithId(R.id.tab_nearby);
+        nearby.setBadgeCount(0);
+
+        final BottomBarTab tab = bottomBar.getTabWithId(R.id.tab_friends);
+        tab.setBadgeCount(90);
+
     }
 }

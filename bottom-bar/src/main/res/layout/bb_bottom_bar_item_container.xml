@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/bb_fake_shadow_height"
         android:background="@drawable/bb_bottom_bar_top_shadow"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 
     <FrameLayout
         android:id="@+id/bb_bottom_bar_outer_container"

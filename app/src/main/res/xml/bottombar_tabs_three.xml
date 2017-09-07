@@ -9,6 +9,10 @@
         icon="@drawable/ic_nearby"
         title="Nearby" />
     <tab
+        id="@+id/tab_food"
+        icon="@drawable/ic_restaurants"
+        title="Food" />
+    <tab
         id="@+id/tab_friends"
         icon="@drawable/ic_friends"
         title="Friends" />
