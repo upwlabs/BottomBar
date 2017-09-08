@@ -1,5 +1,8 @@
 ## Changelog
 
+### 2.3.1.1
+* add dot badge, use BottomBarTab.setBadgeDot() 
+
 ### 2.3.1
 
 * [#749](https://github.com/roughike/BottomBar/pull/749): Quick fix for the issue where *bb_showShadow* set to false didn't have any effect. Thanks @yombunker!
@@ -48,7 +51,7 @@ Thanks for @yombunker, @MarcRubio and @tushar-acharya for their contributions!
 * Fixed a bug where the lower portion of unselected titles were clipped off in fixed mode.
 * Made changes to Badge restoration logic to fix [445](https://github.com/roughike/BottomBar/issues/445). Credit goes to [@Kevinrob](https://github.com/Kevinrob) for reporting and helping to reproduce the issue.
 * Fixed [#448](https://github.com/roughike/BottomBar/issues/448), [#471](https://github.com/roughike/BottomBar/issues/471), [#436](https://github.com/roughike/BottomBar/issues/436) and [#591](https://github.com/roughike/BottomBar/issues/591)
-* Fixed a faulty behavior where the tabs' widths were calculated according to phone screen width, but should've been calculated according to the parent view's width by merging [#504](https://github.com/roughike/BottomBar/pull/504) 
+* Fixed a faulty behavior where the tabs' widths were calculated according to phone screen width, but should've been calculated according to the parent view's width by merging [#504](https://github.com/roughike/BottomBar/pull/504)
 * Optimized the tab resizing calculations; now the tabs aren't needlessly removed and readded, only the layout params get changed.
 * Merged [#468](https://github.com/roughike/BottomBar/pull/468) and [#457](https://github.com/roughike/BottomBar/pull/457)
 * Fixed [#554](https://github.com/roughike/BottomBar/issues/554) by merging [#512](https://github.com/roughike/BottomBar/pull/512).
@@ -120,7 +123,7 @@ See the readme for how to use the new version.
 
 * Now the BottomBar is 56dp tall, as it should be! Make sure your icons are 24dp and **trimmed**, meaning that the whole png size musn't be more than 24dp. So **don't use padding** around the icon.
 * Fixed a minor bug when programmatically selecting a tab.
-* Added a ```setAutoHideOnSelection(boolean autoHideOnSelection)``` method for the BottomBarBadge to control whether it is automatically hidden after the tab that contains it is selected or not. 
+* Added a ```setAutoHideOnSelection(boolean autoHideOnSelection)``` method for the BottomBarBadge to control whether it is automatically hidden after the tab that contains it is selected or not.
 * Titles are now forced to be single line, make sure your title texts are short enough, or else they'll get truncated with a "..." !
 * Updated some dependencies and Gradle.
 
