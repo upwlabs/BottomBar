@@ -70,46 +70,63 @@ dependencies {
     androidTestCompile "com.google.dexmaker:dexmaker-mockito:1.2"
 }
 
+def configurePom(def pom) {
+    // This generates POM.xml with proper parameters
+    pom {
+        project {
+            packaging 'aar'
+            groupId publishedGroupId
+            artifactId artifact
+
+            // Add your description here
+            name libraryName
+            description libraryDescription
+            url siteUrl
+
+            // Set your license
+            licenses {
+                license {
+                    name licenseName
+                    url licenseUrl
+                }
+            }
+            developers {
+                developer {
+                    id developerId
+                    name developerName
+                    email developerEmail
+                }
+            }
+            scm {
+                connection gitUrl
+                developerConnection gitUrl
+                url siteUrl
+
+            }
+        }
+    }
+}
+
 apply plugin: 'com.github.dcendents.android-maven'
 
 group = publishedGroupId                               // Maven Group ID for the artifact
 
 install {
     repositories.mavenInstaller {
-        // This generates POM.xml with proper parameters
-        pom {
-            project {
-                packaging 'aar'
-                groupId publishedGroupId
-                artifactId artifact
+        configurePom pom
+    }
+}
 
-                // Add your description here
-                name libraryName
-                description libraryDescription
-                url siteUrl
-
-                // Set your license
-                licenses {
-                    license {
-                        name licenseName
-                        url licenseUrl
-                    }
-                }
-                developers {
-                    developer {
-                        id developerId
-                        name developerName
-                        email developerEmail
-                    }
-                }
-                scm {
-                    connection gitUrl
-                    developerConnection gitUrl
-                    url siteUrl
-
-                }
-            }
+uploadArchives {
+    repositories.mavenDeployer {
+        repository(url: GLOW_MAVEN) {
+            authentication(
+                userName: USERNAME,
+                password: PASSWORD
+            )
         }
+
+        configurePom pom
     }
 }
 
@@ -126,6 +143,7 @@ if (project.hasProperty("android")) { // Android libraries
     task javadoc(type: Javadoc) {
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+        failOnError false
     }
 } else { // Java libraries
     task sourcesJar(type: Jar, dependsOn: classes) {
